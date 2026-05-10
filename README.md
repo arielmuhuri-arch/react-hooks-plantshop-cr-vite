@@ -1,53 +1,156 @@
-# Phase 2 Code Challenge: Plantsy
+# Plantshop
 
-## Demo
+A React-based plant shop application that allows users to browse, search, and manage plant inventory. This application demonstrates core React concepts including state management, hooks (useState, useEffect), and API integration.
 
-Use this gif as an example of how the app should work.
+## Features
 
-![Demo GIF](./demo.gif)
+- **Display All Plants**: Automatically fetches and displays all plants from the backend on page load
+- **Add New Plants**: Users can submit a form to add new plants to the inventory, which persists to the backend
+- **Mark as Out of Stock**: Users can toggle plants to mark them as out of stock (non-persisting)
+- **Search Functionality**: Filter plants by name with real-time search input
 
-## Instructions
+## Technology Stack
 
-Welcome to Plantsy! You've been tasked with building out some features for the
-admin side of a plant store. The designers have put together the components and
-CSS. Now it's up to you to bring the features to life by adding stateful logic
-as well as persisting data to the backend via our API.
+- **React 18.3.1**: UI library for building interactive components
+- **Vite**: Fast build tool for modern web development
+- **JSON Server**: Mock backend API for plant data storage
+- **Vitest**: Testing framework for unit and integration tests
 
-Your job will be to make our app work according to the user stories you will
-find the [Deliverables](#Deliverables) section.
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd react-hooks-plantshop-cr-vite
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
 ## Setup
 
-1. Run `npm install` in your terminal.
-2. Run `npm run server`. This will run your backend on port `6001`.
-3. In a new terminal, run `npm run dev`.
+Before running the application, you need to start both the backend server and the development server:
 
-Make sure to open [http://localhost:6001/plants](http://localhost:6001/plants)
-in the browser to verify that your backend is working before you proceed!
+1. **Start the backend server** (in one terminal):
+   ```bash
+   npm run server
+   ```
+   This runs the JSON Server on port 6001. Verify it's working by visiting: `http://localhost:6001/plants`
 
-## Endpoints
+2. **Start the development server** (in another terminal):
+   ```bash
+   npm run dev
+   ```
+   This runs the Vite dev server. Open your browser and navigate to the provided URL.
 
-The base URL for your backend is: `http://localhost:6001`
+## Project Structure
 
-## Deliverables
+```
+src/
+├── components/
+│   ├── App.jsx              # Main application component with state management
+│   ├── Header.jsx           # Header with search input
+│   ├── NewPlantForm.jsx     # Form for adding new plants
+│   ├── PlantCard.jsx        # Individual plant card component
+│   ├── PlantList.jsx        # List of plant cards
+│   ├── PlantPage.jsx        # (Currently unused)
+│   └── Search.jsx           # (Currently unused)
+├── __tests__/
+│   ├── App.test.jsx         # Test file
+│   ├── setup.jsx            # Test configuration and mock data
+│   └── test_suites/         # Individual test suites for each feature
+├── main.jsx                 # Application entry point
+└── index.css                # Global styling
+db.json                       # Mock backend database
+```
 
-As a user:
+## API Endpoints
 
-1. When the app starts, I can see all plants.
-2. I can add a new plant to the page by submitting the form.
-3. I can mark a plant as "sold out".
-4. I can search for plants by their name and see a filtered list of plants.
+The application communicates with a JSON Server backend running on `http://localhost:6001`:
 
-### Endpoints for Core Deliverables
+### GET /plants
+Fetches all plants from the database.
 
-#### GET /plants
-
-Example Response:
-
+**Response:**
 ```json
 [
   {
     "id": 1,
+    "name": "Aloe",
+    "image": "./images/aloe.jpg",
+    "price": 15.99,
+    "inStock": true
+  }
+]
+```
+
+### POST /plants
+Adds a new plant to the database.
+
+**Request Body:**
+```json
+{
+  "name": "New Plant",
+  "image": "./images/plant.jpg",
+  "price": 19.99
+}
+```
+
+## How It Works
+
+### Data Fetching
+- The `App` component uses the `useEffect` hook to fetch plants from the backend when the component mounts
+- This happens only once due to the empty dependency array
+
+### Adding Plants
+- The `NewPlantForm` component captures user input and sends a POST request to the backend
+- Upon successful response, the new plant is added to the application state
+
+### Out of Stock Status
+- Users can click the "In Stock" button to mark a plant as out of stock
+- This updates the local state only (non-persisting) - the button changes to "Out of Stock" and becomes disabled
+- To persist this change to the backend, additional implementation would be needed
+
+### Search Filtering
+- The search input in the `Header` component updates the application state
+- The filtered plants list is computed using the `filter()` method with case-insensitive matching
+
+## Running Tests
+
+Run the test suite to verify all functionality is working:
+
+```bash
+npm test
+```
+
+The test suite verifies:
+1. ✅ All plants render on page load
+2. ✅ New plants can be added via form submission
+3. ✅ Plants can be marked as out of stock
+4. ✅ Search filtering works correctly
+
+## Code Quality
+
+The codebase includes:
+- Clear comments explaining the purpose and logic of each component
+- Descriptive variable and function names for better code readability
+- Proper React patterns and hooks usage
+- Comprehensive test coverage
+
+## Future Enhancements
+
+- Persist out of stock status to the backend
+- Add plant details/edit functionality
+- Implement pagination for large plant lists
+- Add plant categories or filtering options
+- Implement user authentication for inventory management
+
+## License
+
+This project is part of a React learning curriculum.
+
     "name": "Aloe",
     "image": "./images/aloe.jpg",
     "price": 15.99

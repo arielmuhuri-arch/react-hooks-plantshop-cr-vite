@@ -1,15 +1,24 @@
-import React from "react";
+function PlantCard({ plant, onSoldOut }) {
+  // Destructure plant data
+  const { id, name, image, price, inStock } = plant;
 
-function PlantCard() {
   return (
     <li className="card" data-testid="plant-item">
-      <img src={"https://via.placeholder.com/400"} alt={"plant name"} />
-      <h4>{"plant name"}</h4>
-      <p>Price: {"plant price"}</p>
-      {true ? (
-        <button className="primary">In Stock</button>
+      <img src={image} alt={name} />
+
+      <h4>{name}</h4>
+
+      <p>Price: {price}</p>
+
+      {/* Show "In Stock" button if plant is in stock, otherwise show disabled "Out of Stock" button */}
+      {inStock ? (
+        <button onClick={() => onSoldOut(id)}>
+          In Stock
+        </button>
       ) : (
-        <button>Out of Stock</button>
+        <button disabled>
+          Out of Stock
+        </button>
       )}
     </li>
   );
